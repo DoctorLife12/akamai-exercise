@@ -1,0 +1,22 @@
+<%@ page import="java.util.*, java.io.*, java.net.*" %>
+
+<html>
+<head><title>RandoMongo</title></head>
+<body>
+  <%
+    String[] servers = { {% for db_server in db_servers %}"{{ db_server }}",{% endfor %} };
+    String selectedServer = servers[new Random().nextInt(servers.length)];
+  %>
+      <h2>Connecting to MongoDB Server <i>(<%= selectedServer %>)</i>...</h2>
+  <%
+    Socket socket = new Socket(selectedServer, 27017);
+    OutputStream outSocket = socket.getOutputStream();
+    String str = "Hello!\n";
+    byte buffer[] = str.getBytes();
+    outSocket.write(buffer);
+    socket.close();	
+  %>
+      <h2>Bravo!</h2>
+</body>
+</html>
+
